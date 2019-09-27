@@ -91,6 +91,7 @@ public class AppMain extends JFrame implements ActionListener {
 	public void start() {
 		if (setParameters()) {
 			if (ifx.connect()) {
+				ifx.setFechaStoredProcedure();
 				fetchTable();
 				timer.start();
 
@@ -127,6 +128,7 @@ public class AppMain extends JFrame implements ActionListener {
 
 	public void fetchTable() {
 		if (ifx.isConnected()) {
+			
 
 			table.setModel(ifx.buildTableModel());
 			table_1.setModel(ifx.buildTableModelAborted());
@@ -144,7 +146,6 @@ public class AppMain extends JFrame implements ActionListener {
 
 			if (totalCalls > warningCalls - 1 && totalCalls < dangerCalls && warning == false) {
 				lblLlamadasPerdidas.setForeground(new Color(128, 128, 0));
-				System.out.println("Notificación enviada");
 				try {
 					dti.sendNotification("Advertencia", "Acercándose al límite de llamadas perdidas",
 							MessageType.WARNING);
@@ -156,7 +157,6 @@ public class AppMain extends JFrame implements ActionListener {
 
 			if (totalCalls > dangerCalls - 1 && danger == false) {
 				lblLlamadasPerdidas.setForeground(Color.red);
-				System.out.println("Notificación enviada");
 				try {
 					dti.sendNotification("Alerta", "Límite de llamadas perdidas excedidas", MessageType.ERROR);
 				} catch (Exception e) {
@@ -179,7 +179,6 @@ public class AppMain extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		fetchTable();
-		System.out.print(".");
 	}
 
 	/**
